@@ -1,0 +1,81 @@
+extends admin-base
+
+block content
+  main.admin-main
+    section#user
+      form.new-content-form.item#form-user-data
+        h2 Profile
+        .post-group
+          label(for="name") Name
+          input#name(type="text" name='name', value=user ? user.name : '')
+        .post-group
+          label(for="email") Email
+          input#email(type="email" name='email', value=user ? user.email : '')
+        .post-group
+          label(for="bio") Bio
+          textarea#bio(name='bio')= user ? user.bio : ""
+        .post-group 
+          label(for="forImg") 
+          input#forImg(type="file" accept='image/*' name='photo')
+        .post-group 
+          img#imgForImg(src=`/uploads/users/${user.photo}` alt=`A photo of ${user.title}`)
+        .post-group 
+          button(type="submit") Update
+
+      form.new-content-form.item.updateSocial
+        h2 Social Media Links
+
+        .post-group
+          label(for="twitter") Twitter
+          input(type="text" id='twitter' name="twitter", value=social && social.twitter ? social.twitter : '', required)
+
+        .post-group
+          label(for="facebook") Facebook
+          input(type="text" id='facebook' name="facebook", value=social && social.facebook ? social.facebook : '', required)
+
+        .post-group
+          label(for="linkedin") LinkedIn
+          input(type="text" id='linkedin' name="linkedin", value=social && social.linkedin ? social.linkedin : '', required)
+
+        .post-group
+          label(for="github") GitHub
+          input(type="text" id='github' name="github", value=social && social.github ? social.github : '', required)
+
+        .post-group
+          label(for="youtube") YouTube
+          input(type="text" id='youtube' name="youtube", value=social && social.youtube ? social.youtube : '', required)
+
+        .post-group
+          label(for="instagram") Instagram
+          input(type="text" id='instagram' name="instagram", value=social && social.instagram ? social.instagram : '', required)
+
+        .post-group
+          label(for="telegram") Telegram
+          input(type="text" id='telegram' name="telegram", value=social && social.telegram ? social.telegram : '', required)
+
+        .post-group
+          label(for="whatsapp") Whatsapp
+          input(type="text" id='whatsapp' name="whatsapp", value=social && social.whatsapp ? social.whatsapp : '', required)
+
+        .post-group
+          button(type="submit") Update Socials
+
+      form.new-content-form.item.form-user-password
+        h2 Reset Password
+        .post-group
+          label(for="passwordCurrent") Current Password
+          input#passwordCurrent(type="password" required)
+          button#showPasswordCurrent.toggle-password(type="button") Show
+        .post-group
+          label(for="password") Password
+          input#password(type="password" required)
+          button#showPassword.toggle-password(type="button") Show
+        .post-group
+          label(for="passwordConfirm") Confirm Password
+          input#passwordConfirm(type="password" required)
+          button#showPasswordConfirm.toggle-password(type="button") Show
+        .post-group
+          button#save-password(type="submit") Update
+
+  script(src='/js/script.js')
+

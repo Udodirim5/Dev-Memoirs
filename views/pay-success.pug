@@ -1,0 +1,19 @@
+extends clients-base
+
+block content
+  main
+    article
+      section.get-download(aria-label="our latest market")
+        .download-paid-section
+          .confirmation-message
+            h1 Thank you for your purchase, #{buyerName}!
+            p Order Number: #{item}
+            p Date of Purchase: #{purchaseDate}
+
+          .redirect-container
+            if !reviewExists
+              form.redirect-form
+                input#redirect-email(type="hidden", name="buyerEmail", value=buyerEmail)
+                input#item(type="hidden", name="purchaseId", value=item)
+                p#counter If you're not redirected in 5 seconds,
+                button(type="submit", class="redirect-btn") Click Here
