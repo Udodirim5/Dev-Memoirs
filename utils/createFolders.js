@@ -6,7 +6,7 @@ const createUploadDirs = () => {
   const dirs = [
     "public/uploads/images",
     "public/uploads/zips",
-    "public/uploads/blogs",
+    "public/uploads/posts",
     "public/uploads/projects",
     "public/uploads/users",
     "public/uploads/items",

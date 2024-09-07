@@ -2739,6 +2739,68 @@ button.buy:hover {
   font-size: 1.5rem;
 }
 
+#admin-body .post-group .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+#admin-body .post-group .category-dropBtn {
+  background: var(--gradient-2);
+  color: var(--text-white);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--text-white);
+  padding: 10px;
+}
+
+#admin-body .post-group .dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--border-space-cadet);
+  width: 100%;
+  z-index: 1;
+}
+
+#admin-body .post-group .dropdown-content-inner {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#admin-body .post-group .dropdown-content span {
+  color: var(--text-white);
+  padding: 12px;
+  font-size: 1.5rem;
+}
+
+#admin-body .post-group .dropdown-content span:hover {
+  background-color: var(--gradient-2);
+}
+
+#admin-body .post-group .dropdown-content .del-category {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  font-size: 2.5rem;
+  color: var(--text-white);
+  cursor: pointer;
+  transform: translate(-10%, -50%);
+}
+
+#admin-body .post-group .dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+#admin-body .post-group .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
 #imgForImg {
   height: 320px;
   object-fit: cover;
@@ -4591,14 +4653,14 @@ header h2 {
     overflow: hidden;
     transition: all var(--transition-2);
   }
-  
+
   #new-project .checkbox-inner:hover {
     height: max-content;
   }
 
 
 
-  
+
   #new-project .checkbox-inner input[type='checkbox'] {
     display: none;
   }
@@ -4646,8 +4708,8 @@ header h2 {
   #admin-body .new-category {
     width: 310px;
   }
-  
-  
+
+
 
 
 
@@ -5075,7 +5137,7 @@ header h2 {
   #admin-body .new-category {
     width: 400px;
   }
-  
+
 
 }
 

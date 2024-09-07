@@ -3,39 +3,42 @@ extends admin-base
 block content
   main.admin-main
     section#new-posts
-      h2 Create New Post
+      h2 #{post ? 'Edit Post' : 'Create New Post'}
 
-      form.new-content-form#createPost
+      form.new-content-form#postForm(data-post-id=post ? post._id : '')
         .post-group
           label(for="new-post-title") Title
-          input#new-post-title(type="text" name="title" required autofocus)
+          input#new-post-title(type="text" name="title" required autofocus value=post ? post.title : '')
 
         .post-group
-          ul.elements
-            li: button(type="button" data-element="h1") h1
-            li: button(type="button" data-element="h2") h2
-            li: button(type="button" data-element="h3") h3
-            li: button(type="button" data-element="h4") h4
-            li: button(type="button" data-element="h5") h5
-            li: button(type="button" data-element="h6") h6
-            li: button(type="button" data-element="ul") ul
-            li: button(type="button" data-element="li") li
-            li: button(type="button" data-element="p") p
-            li: button(type="button" data-element="a") a
-            li: button(type="button" data-element="code") code
-            li: button(type="button" data-element="pre") pre
-            li: button(type="button" data-element="img") img
+          fieldset
+            legend Elements:
+            ul.elements
+              li: button(type="button" data-element="h1") h1
+              li: button(type="button" data-element="h2") h2
+              li: button(type="button" data-element="h3") h3
+              li: button(type="button" data-element="h4") h4
+              li: button(type="button" data-element="h5") h5
+              li: button(type="button" data-element="h6") h6
+              li: button(type="button" data-element="ul") ul
+              li: button(type="button" data-element="li") li
+              li: button(type="button" data-element="p") p
+              li: button(type="button" data-element="a") a
+              li: button(type="button" data-element="code") code
+              li: button(type="button" data-element="pre") pre
+              li: button(type="button" data-element="img") img
 
+        .post-group
           label(for="new-post-content") Content
-          textarea#new-post-content(name="content" required)
+          textarea#new-post-content(name="content" required)= post ? post.content : '' 
 
         .post-group
           label(for="excerpt") Excerpt:
-          input(type="text" id="excerpt" name="excerpt" required)
+          input(type="text" id="excerpt" name="excerpt" required value=post ? post.excerpt : '')
 
         .post-group
           label(for="tags") Tags:
-          input(type="text" id="tags" name="tags")
+          input(type="text" id="tags" name="tags" value=post ? String(post.tags).replace(/[\[\]"]+/g, '') : '')
 
         .post-group.categories
           button(type="button" id="addNewCat") Add New
@@ -43,16 +46,19 @@ block content
           select#categories(name="category" required)
             option(value="") Select a category
             each category in categories
-              option(value=category._id) #{category.name}
+              option(value=category._id selected=post && post.category == category._id) #{category.name}
 
         .iPNG
           .post-group
             label(for="new-post-img" aria-label="upload image")
-              img#iPNGimg(src="/img/svg/cloud-upload.svg" alt="")
-            input#new-post-img(type="file" name="photo" required)
+              if post && post.photo
+                img#iPNGimg(src=`/uploads/posts/${post.photo}` alt=`A photo of ${post.title}`)
+              else
+                img#iPNGimg(src="/img/svg/cloud-upload.svg" alt="Upload Image")
+            input#new-post-img(type="file" name="photo")
 
         .post-group
-          button(type="submit") Submit
+          button(type="submit") #{post ? 'Update Post' : 'Create Post'}
 
       .categories-container
         .new-category
@@ -67,3 +73,92 @@ block content
             .addNClose
               button(type="submit") Add 
               button(type="button" id ="cancel") Cancel 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//- extends admin-base
+
+//- block content
+//-   main.admin-main
+//-     section#new-posts
+//-       h2 #{post ? 'Edit Post' : 'Create New Post'}
+
+//-       form.new-content-form#postForm(data-post-id=post ? post._id : '')
+//-         .post-group
+//-           label(for="new-post-title") Title
+//-           input#new-post-title(type="text" name="title" required autofocus value=post ? post.title : '')
+
+//-         .post-group
+//-           fieldset
+//-             legend Elements:
+//-             ul.elements
+//-               li: button(type="button" data-element="h1") h1
+//-               li: button(type="button" data-element="h2") h2
+//-               li: button(type="button" data-element="h3") h3
+//-               li: button(type="button" data-element="h4") h4
+//-               li: button(type="button" data-element="h5") h5
+//-               li: button(type="button" data-element="h6") h6
+//-               li: button(type="button" data-element="ul") ul
+//-               li: button(type="button" data-element="li") li
+//-               li: button(type="button" data-element="p") p
+//-               li: button(type="button" data-element="a") a
+//-               li: button(type="button" data-element="code") code
+//-               li: button(type="button" data-element="pre") pre
+//-               li: button(type="button" data-element="img") img
+
+//-         .post-group
+//-           label(for="new-post-content") Content
+//-           textarea#new-post-content(name="content" required)= post ? post.content : '' 
+
+//-         .post-group
+//-           label(for="excerpt") Excerpt
+//-           input(type="text" id="excerpt" name="excerpt" required value=post ? post.excerpt : '')
+
+//-         .post-group
+//-           label(for="tags") Tags
+//-           input(type="text" id="tags" name="tags" value=post ? String(post.tags).replace(/[\[\]"]+/g, '') : '')
+
+//-         .post-group
+//-           label(for="categories") Choose a category
+//-           select#categories(name="category" required)
+//-             option(value="") Select a category
+//-             each category in categories
+//-               option(value=category._id selected=post && post.category == category._id) #{category.name}
+
+//-         .post-group
+//-           .dropdown
+//-             .category-dropBtn Select a category
+//-             .dropdown-content
+//-               each category in categories
+//-                 .dropdown-content-inner
+//-                   span(data-category-id=category._id)= category.name
+//-                   .del-category x
+
+//-         .iPNG
+//-           .post-group
+//-             label(for="new-post-img" aria-label="upload image")
+//-               if post && post.photo
+//-                 img#iPNGimg(src=`/uploads/posts/${post.photo}` alt=`A photo of ${post.title}`)
+//-               else
+//-                 img#iPNGimg(src="/img/svg/cloud-upload.svg" alt="Upload Image")
+//-             input#new-post-img(type="file" name="photo")
+
+//-         .post-group
+//-           button(type="submit") #{post ? 'Update Post' : 'Create Post'}

@@ -219,7 +219,7 @@ exports.getEditPost = catchAsync(async (req, res) => {
     return next(new AppError("No post found with that ID", 404));
   }
 
-  res.status(200).render("editPost", {
+  res.status(200).render("createPost", {
     title: `Edit Post - ${post.title}`,
     post,
     categories,

@@ -21,7 +21,6 @@ const multerStorage = multer.memoryStorage();
 //   }
 // });
 
-
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -55,7 +54,7 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
       .resize(2000, 1333)
       .toFormat("jpeg")
       .jpeg({ quality: 90 })
-      .toFile(`public/uploads/blogs/${req.body.photo}`);
+      .toFile(`public/uploads/posts/${req.body.photo}`);
   }
 
   // Process other images
@@ -70,7 +69,7 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
           .resize(2000, 1333)
           .toFormat("jpeg")
           .jpeg({ quality: 90 })
-          .toFile(`public/img/posts/${filename}`);
+          .toFile(`public/uploads/posts/${filename}`);
 
         req.body.images.push(filename);
       })
@@ -115,7 +114,9 @@ exports.popularPosts = catchAsync(async (req, res, next) => {
 
 exports.getPost = factory.getOne(Post, { path: "author" });
 exports.getAllPosts = factory.getAll(Post, { path: "author" });
-exports.deletePost = factory.deleteOne(Post);
+// exports.deletePost = factory.deleteOne(Post);
+exports.deletePost = factory.deleteOne(Post, ["images", "photo"]);
+
 exports.incPost = factory.viewsCounter(Post);
 
 // Sanitize and validate post data for creating a new post
@@ -291,7 +292,9 @@ exports.like = catchAsync(async (req, res) => {
   }
 
   await post.toggleLike(req.user._id); // Toggle like
-  res.status(200).json({ status: "success", message: "Like toggled successfully" });
+  res
+    .status(200)
+    .json({ status: "success", message: "Like toggled successfully" });
 });
 
 // Dislike a post
@@ -302,5 +305,7 @@ exports.dislike = catchAsync(async (req, res) => {
   }
 
   await post.toggleDislike(req.user._id); // Toggle dislike
-  res.status(200).json({ status: "success", message: "Dislike toggled successfully" });
+  res
+    .status(200)
+    .json({ status: "success", message: "Dislike toggled successfully" });
 });

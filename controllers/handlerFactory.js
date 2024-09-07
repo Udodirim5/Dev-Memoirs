@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
@@ -96,14 +98,58 @@ exports.updateOne = (Model) =>
     });
   });
 
-exports.deleteOne = (Model) =>
+// exports.deleteOne = (Model) =>
+//   catchAsync(async (req, res, next) => {
+//     const doc = await Model.findByIdAndDelete(req.params.id);
+
+//     if (!doc) {
+//       return next(new AppError("No document found with that ID", 404));
+//     }
+
+//     res.status(204).json({
+//       status: "success",
+//       data: null,
+//     });
+//   });
+
+exports.deleteOne = (Model, photoFields = []) =>
   catchAsync(async (req, res, next) => {
+    // 1. Find the document by ID and delete it
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) {
       return next(new AppError("No document found with that ID", 404));
     }
 
+    // 2. Get the model name dynamically and make it plural
+    const modelName = Model.modelName.toLowerCase() + 's';
+
+    // 3. Delete associated photos if they exist
+    if (photoFields && photoFields.length) {
+      for (const fieldPath of photoFields) {
+        if (doc[fieldPath]) {
+          const photoPath = path.join(
+            __dirname,
+            "..",
+            "public",
+            "uploads",
+            modelName,  // dynamically use the plural model name for the folder
+            doc[fieldPath]
+          );
+
+          try {
+            // Attempt to delete the file using fs.promises.unlink
+            await fs.unlink(photoPath);
+            console.log(`Successfully deleted ${photoPath}`);
+          } catch (err) {
+            // Handle cases where the file might not exist
+            console.error(`Failed to delete ${photoPath}:`, err.message);
+          }
+        }
+      }
+    }
+
+    // 4. Send a response to the client
     res.status(204).json({
       status: "success",
       data: null,

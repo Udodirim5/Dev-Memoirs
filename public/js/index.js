@@ -2,18 +2,26 @@
 import "@babel/polyfill";
 import { showAlert } from "./alert";
 import { getBaseUrl } from "./baseUrl";
-import { createPost } from "./createPost";
-import { updatePost } from "./updatePost.js";
-import { deleteItem } from "./handleDeletes";
-import { login, logout, signup } from "./login";
-import { formatNumber } from "./formatNumber.js";
-import { createComment } from "./createCommentFn";
-import { updateSettings } from "./updateSettings";
-import { fetchTrafficData } from "./fetchTrafficData.js";
+import {
+  login,
+  logout,
+  signup,
+  deleteItem,
+  createItem,
+  addCategory,
+  formatNumber,
+  createReview,
+  verifyEmailFn,
+  createComment,
+  updateSettings,
+  createContactUs,
+  handlePostSubmit,
+  fetchTrafficData,
+  handlePaymentCallback,
+  initializeImagePreview,
+} from "./updateFn.js";
+
 import { handleProjectFormSubmit } from "./createProject";
-import { handlePaymentCallback } from "./handlePayment.js";
-import { createReview, verifyEmailFn } from "./handleReview";
-import { createContactUs, createItem, addCategory } from "./createItems";
 
 // DOM ELEMENTS
 const editPost = document.querySelector("#editPost");
@@ -22,7 +30,7 @@ const loginForm = document.querySelector("#form--login");
 const signupForm = document.querySelector("#signUpForm");
 const contactForm = document.querySelector(".contact-form");
 const commentForm = document.getElementById("comment-form");
-const createPostForm = document.querySelector("#createPost");
+const createPostForm = document.querySelector("#postForm");
 const userDataForm = document.querySelector("#form-user-data");
 const updateSocialForm = document.querySelector(".updateSocial");
 const updatePasswordForm = document.querySelector(".form-user-password");
@@ -67,8 +75,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (createPostForm) {
-    createPostForm.addEventListener("submit", (e) => {
+  initializeImagePreview("#iPNGimg", "#new-post-img");
+createPostForm.addEventListener("submit", (e) => {
       e.preventDefault();
+
+      const postId = createPostForm.getAttribute("data-post-id");
       const title = document.getElementById("new-post-title").value;
       const content = document.getElementById("new-post-content").value;
       const excerpt = document.getElementById("excerpt").value;
@@ -76,15 +87,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       const category = document.getElementById("categories").value;
       const newPostImg = document.getElementById("new-post-img").files[0];
 
-      createPost(
+      const type = postId ? "update" : "create";
+
+      handlePostSubmit(
         title,
         content,
         excerpt,
         tags,
         category,
         newPostImg,
-        "author", // You can replace 'author' with the actual author value
-        true // Replace with the actual published value if needed
+        "author", // Replace with actual author
+        true,
+        type,
+        postId
       );
     });
   }
@@ -215,21 +230,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  if (editPost) {
-    editPost.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const postId = editPost.getAttribute("data-post-id");
-      const title = document.getElementById("new-post-title").value;
-      const content = document.getElementById("new-post-content").value;
-      const excerpt = document.getElementById("excerpt").value;
-      const tags = document.getElementById("tags").value.split(",");
-      const category = document.getElementById("categories").value;
-      const newPostImg = document.getElementById("new-post-img").files[0];
-
-      updatePost(title, content, excerpt, tags, category, newPostImg, postId);
-    });
-  }
 
   // Attach event listeners to forms
   const createProjectForm = document.querySelector("#createProject");

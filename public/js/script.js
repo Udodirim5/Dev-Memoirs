@@ -128,19 +128,6 @@ addEventOnElements(hoverElements, "mouseout", function() {
 /**
  * Admin side JavaScript
  */
-// const initializeImagePreview = function(imgSelector, inputSelector) {
-//   const imgElement = document.querySelector(imgSelector);
-//   const inputElement = document.querySelector(inputSelector);
-
-//   if (inputElement) {
-//     inputElement.addEventListener("change", () => {
-//       const file = inputElement.files[0];
-//       if (file) {
-//         imgElement.src = URL.createObjectURL(file);
-//       }
-//     });
-//   }
-// };
 
 const initializePasswordToggle = function(
   passwordInputSelector,
@@ -180,9 +167,9 @@ if (signupForm) {
 }
 
 const profileForm = document.querySelector(".form-user-data");
-if (profileForm) {
-  initializeImagePreview("#imgForImg", "#forImg");
-}
+// if (profileForm) {
+//   initializeImagePreview("#imgForImg", "#forImg");
+// }
 
 // const createPostForm = document.querySelector("#createPost");
 // if (createPostForm) {
